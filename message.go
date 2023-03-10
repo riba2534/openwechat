@@ -159,6 +159,9 @@ func (m *Message) IsSendByGroup() bool {
 // ReplyText 回复文本消息
 func (m *Message) ReplyText(content string) (*SentMessage, error) {
 	msg := NewSendMessage(MsgTypeText, content, m.bot.self.User.UserName, m.FromUserName, "")
+	if m.IsSendBySelf() {
+		msg = NewSendMessage(MsgTypeText, content, m.bot.self.User.UserName, m.ToUserName, "")
+	}
 	info := m.Bot().Storage.LoginInfo
 	request := m.Bot().Storage.Request
 	sentMessage, err := m.bot.Caller.WebWxSendMsg(msg, info, request)
@@ -169,7 +172,15 @@ func (m *Message) ReplyText(content string) (*SentMessage, error) {
 func (m *Message) ReplyImage(file io.Reader) (*SentMessage, error) {
 	info := m.bot.Storage.LoginInfo
 	request := m.bot.Storage.Request
-	sentMessage, err := m.bot.Caller.WebWxSendImageMsg(file, request, info, m.bot.self.UserName, m.FromUserName)
+
+	var sentMessage *SentMessage
+	var err error
+	if m.IsSendBySelf() {
+		// 如果正在回复自己的消息，相当于自己给别人发
+		sentMessage, err = m.bot.Caller.WebWxSendImageMsg(file, request, info, m.bot.self.UserName, m.ToUserName)
+	} else {
+		sentMessage, err = m.bot.Caller.WebWxSendImageMsg(file, request, info, m.bot.self.UserName, m.FromUserName)
+	}
 	return m.bot.self.sendMessageWrapper(sentMessage, err)
 }
 
