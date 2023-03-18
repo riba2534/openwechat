@@ -39,8 +39,7 @@ import (
 )
 
 func main() {
-	bot := openwechat.DefaultBot()
-	// bot := openwechat.DefaultBot(openwechat.Desktop) // 桌面模式，上面登录不上的可以尝试切换这种模式
+	bot := openwechat.DefaultBot(openwechat.Desktop) // 桌面模式
 
 	// 注册消息处理函数
 	bot.MessageHandler = func(msg *openwechat.Message) {
@@ -98,7 +97,9 @@ func main() {
 
 ### 添加微信(eatmoreapple):apple:（备注: openwechat），进群交流:smiling_imp:
 
-**如果二维码图片没显示出来，请添加微信号 eatmoreapple**
+** 喜欢的话，可以请作者喝包辣条(我没打错字，我都是喝的)，谢谢支持 :smile: **
+
+<img width="210px"  src="https://github.com/eatmoreapple/eatmoreapple/blob/main/img/wechat_pay.jpg" align="left">
 
 <img width="210px"  src="https://raw.githubusercontent.com/eatmoreapple/eatMoreApple/main/img/wechat.jpg" align="left">
 
